@@ -35,8 +35,18 @@ namespace GettingStarted
                         x.AddSagas(entryAssembly);
                         x.AddActivities(entryAssembly);
 
-                        x.UsingInMemory((context, cfg) =>
+                        //x.UsingInMemory((context, cfg) =>
+                        //{
+                        //    cfg.ConfigureEndpoints(context);
+                        //});
+
+                        x.UsingRabbitMq((context, cfg) =>
                         {
+                            cfg.Host(hostContext.Configuration["RabbitMQHost"], "/", h => {
+                                h.Username(hostContext.Configuration["RabbitMQUser"]);
+                                h.Password(hostContext.Configuration["RabbitMQPassword"]);
+                            });
+
                             cfg.ConfigureEndpoints(context);
                         });
                     });
